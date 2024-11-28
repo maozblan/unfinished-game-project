@@ -1,0 +1,34 @@
+{
+  "sample": {
+    "dialogue": [
+      {
+        "narrator": "A",
+        "text": "hello there"
+      },
+      {
+        "narrator": "B",
+        "text": "this is a test",
+        "modifier": {
+        }
+      }
+    ],
+    "choices": [
+      {
+        "text": "choiceA",
+        "link": "sample2"
+      },
+      {
+        "text": "choiceB",
+        "link": "sample2"
+      }
+    ]
+  },
+  "sample2": {
+    "dialogue": [
+      {
+        "narrator": "A",
+        "text": "this is sample text 2"
+      }
+    ]
+  }
+}

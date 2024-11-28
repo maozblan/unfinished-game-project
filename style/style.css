@@ -1,0 +1,9 @@
+p {
+  font-family: monospace;
+  cursor: default;
+}
+
+.choice {
+  color: cornflowerblue;
+  cursor: pointer;
+}
