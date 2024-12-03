@@ -2,35 +2,43 @@
   "settings": {
   },
   "scenes": {
-  "sample": {
+  "Start": {
     "dialogue": [
       {
         "narrator": "A",
-        "text": "hello there"
+        "text": "Wait, do you hear that? <br>Is someone there?"
       },
       {
         "narrator": "B",
-        "text": "this is a test",
-        "modifier": {
-        }
+        "text": "What? There's no way someone's here already"
+      },
+      {
+        "narrator": "A",
+        "text": "No I'm serious, I think someone's here! ahem,"
+      },
+      {
+        "narrarator": "A",
+        "text": "**Hello Player, welcome to our game!**"
       }
+
     ],
     "choices": [
       {
-        "text": "choiceA",
-        "link": "sample2"
+        "text": "Who me?",
+        "link": "Player Noticed"
       },
       {
-        "text": "choiceB",
-        "link": "sample2"
+        "comment": "should appear after a delay",
+        "text": "...",
+        "link": "stay silent"
       }
     ]
   },
-  "sample2": {
+  "Player Noticed": {
     "dialogue": [
       {
         "narrator": "A",
-        "text": "this is sample text 2"
+        "text": "Oh, there actually is someone here, I didn't expect that (maybe small for surprise?)"
       }
     ]
   }
