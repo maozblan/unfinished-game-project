@@ -29,7 +29,9 @@
         "text": "...",
         "link": "stay silent"
       }
-    ]
+    ],
+    "modifiers": {
+    }
   },
   "Player Noticed": {
     "text": [

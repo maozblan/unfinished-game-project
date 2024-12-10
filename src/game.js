@@ -35,18 +35,25 @@ function loadMinigame(gameFunc) {
   // load minigame from minigames file
 }
 
-// utility functions ///////////////////////////////////////////////////////////
+// loading scene ///////////////////////////////////////////////////////////////
 function clearScreen() {
   div.replaceChildren();
 }
 
+function loadDialogue(dialogue) {
+  const div = createDialogue(dialogue);
+  applyModifiers(dialogue.modifiers, div);
+}
+
 function createDialogue(dialogue) {
   const div = document.createElement("div");
-  div.classList.add("dialogue");
+  div.classList.add("dialogue", clean(dialogue.narrator));
   div.innerHTML = `
-    <p>
+    <p class="narrator">
       ${GAME_SETTINGS.savedNames[dialogue.narrator] ?? dialogue.narrator}: 
-      ${dialogue.text}
+    </p>
+    <p class="text">
+      ${marked(dialogue.text)}
     </p>
   `;
   return div;
@@ -56,12 +63,24 @@ function createChoice(choice) {
   const div = document.createElement("div");
   div.classList.add("choice");
   div.innerHTML = `
-    <p>${choice.text}</p>
+    <p>${marked(choice.text)}</p>
   `;
   div.addEventListener("click", () => {
     loadScene(choice.link);
   });
   return div;
+}
+
+// modifier handling ///////////////////////////////////////////////////////////
+
+function applyModifiers(modifiers, element) {
+  if (!modifiers) return;
+}
+
+function delay(seconds, callback) {
+  setTimeout(() => {
+    callback();
+  }, seconds * 1000);
 }
 
 function typewrite(text, display, index = 0) {
@@ -74,13 +93,26 @@ function typewrite(text, display, index = 0) {
 }
 
 function addStyle(selector, styles = {}) {
-  const wah = `
+  document.getElementById("user-defined-styles").innerHTML += `
     ${selector} {
       ${Object.entries(styles)
         .map(([key, value]) => `${key}: ${value};`)
         .join("\n")}
     }
   `;
-  document.getElementById("user-defined-styles").innerHTML += wah;
-  console.log(wah);
+}
+
+// utility functions ///////////////////////////////////////////////////////////
+
+function clean(string) {
+  return string.replace(/\s/g, "-");
+}
+
+function marked(md) {
+  console.log(md, md.search(/<(.+?):(.+)>(.+)<\/\1>/g));
+  return md
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\_\_(.+?)\_\_/g, "<em>$1</em>")
+    .replace(/\~\~(.+?)\~\~/g, "<del>$1</del>")
+    .replace(/<(\w+?):(.+?)>(.+?)<\/\1>/g, `<span style="$1: $2;">$3</span>`);
 }

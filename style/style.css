@@ -5,5 +5,10 @@ p {
 
 .choice {
   color: cornflowerblue;
+  width: fit-content;
+}
+
+.choice p {
+  width: fit-content;
   cursor: pointer;
 }

@@ -123,6 +123,7 @@ add to list to request, mark important ones please
     - [ ] change text size starting from x-dialogue
     - [ ] glitch
     - [ ] SET game settings / IF game settings
-- [ ] italics and bold with __ and **
+- [x] italics and bold with __ and **
 - [ ] typewriter effect
+- [x] be able to go dialog, choice, dialog etc. in the same scene
 ```
