@@ -2,7 +2,7 @@
 
 hello hello, this is an "unfinished" game project for CMPM179
 
-- to insert dialogue please refer to data.json for reference
+- please insert your game text into `src/game.json`
 - there will be modifers for choices and links added later...
 
 # how to use
@@ -30,31 +30,37 @@ sample format:
 ```js
 // inside scenes: { ... here! }
 sceneKey: {
-  dialogue: [
+  text: [
+    // this is plain text
     {
       narrator: "narrator name",
       text: "some sample text"
-    }
-  ],
-  choices: [
+    },
+    // this is a link
     {
       text: "click me!",
       link: "scene2"
     }
-  ]
+  ],
+  modifiers: {
+    // add scene-based modifiers here!
+  }
 },
 // more stuff ...
 ```
 
 elements to note:
 - `sceneKey` is the scene key, it can be any string with no spaces, MUST BE UNIQUE
-- `dialogue` is a list of dialogue objects, it must have two keys in any order:
-  - `narrator` is the name of the narrator
-  - `text` is the text to display for that the narrator should talk about
-- `choices` is a list of choice objects, it must have two keys in any order:
-  - `text` is the text to display as a link
-  - `link` is the scene key for the scene it should switch to
-    - if the scene key is the same as the key for this object, the scene will be rerendered
+  - the scene object must contain a `text` object; the `modifiers` object is optional
+- `text` is a list of dialogue or choice objects:
+  - dialogue objects MUST have the following two keys: 
+    - `narrator` is the name of the narrator
+    - `text` is the text to display for that the narrator should talk about
+  - choices objects MUST have the following two keys: 
+    - `text` is the text to display as a link
+    - `link` is the scene key for the scene it should switch to
+      - if the scene key is the same as the key for this object, the scene will be rerendered
+  - both objects can optionally have the `modifier` key to overwrite or add any modifiers for tht line
 
 for customization, see modifiers below
 
@@ -67,18 +73,14 @@ NONE. thank you...
 inline modifiers are anything that you will encode into the value of the `text` key for either a dialogue object or a choice object
 
 ```js
-dialgoue: [
-  {
-    text: "inline modifiers go here!",
-    ...
-  }
-],
-choice: [
+sceneKey: {
+  text: [
     {
-    text: "inline modifiers can also go here!",
-    ...
-  }
-]
+      text: "inline modifiers go here!",
+      ...
+    }
+  ]
+}
 ```
 
 ### additional modifiers
@@ -91,18 +93,10 @@ settings: {
 },
 scenes: {
   sceneKey: {
-    dialgoue: [
+    text: [
       {
         modifier: {
           // per-line additional modifiers here
-        },
-        ...
-      }
-    ],
-    choice: [
-      {
-        modifier: {
-          // per-line additional modifiers here too
         },
         ...
       }

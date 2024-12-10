@@ -3,9 +3,7 @@ let GAME_SETTINGS = {
   savedNames: {},
 };
 
-const d_div = document.getElementById("narrator-dialogue");
-const m_div = document.getElementById("player-task");
-const c_div = document.getElementById("player-choices");
+const div = document.getElementById("scene");
 
 document.addEventListener("DOMContentLoaded", async () => {
   loadGameSave();
@@ -24,12 +22,12 @@ function startGame(script) {
 
 function loadScene(key) {
   clearScreen();
-  GAME_SCRIPT[key].dialogue.forEach((dialogue) => {
-    d_div.append(createDialogue(dialogue));
-  });
-
-  GAME_SCRIPT[key].choices.forEach((choice) => {
-    c_div.append(createChoice(choice));
+  GAME_SCRIPT[key].text.forEach((text) => {
+    if (text.link) {
+      div.append(createChoice(text));
+    } else {
+      div.append(createDialogue(text));
+    }
   });
 }
 
@@ -39,9 +37,7 @@ function loadMinigame(gameFunc) {
 
 // utility functions ///////////////////////////////////////////////////////////
 function clearScreen() {
-  d_div.replaceChildren();
-  m_div.replaceChildren();
-  c_div.replaceChildren();
+  div.replaceChildren();
 }
 
 function createDialogue(dialogue) {

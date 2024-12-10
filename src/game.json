@@ -3,7 +3,7 @@
   },
   "scenes": {
   "Start": {
-    "dialogue": [
+    "text": [
       {
         "narrator": "A",
         "text": "Wait, do you hear that? <br>Is someone there?"
@@ -19,10 +19,7 @@
       {
         "narrarator": "A",
         "text": "**Hello Player, welcome to our game!**"
-      }
-
-    ],
-    "choices": [
+      },
       {
         "text": "Who me?",
         "link": "Player Noticed"
@@ -35,7 +32,7 @@
     ]
   },
   "Player Noticed": {
-    "dialogue": [
+    "text": [
       {
         "narrator": "A",
         "text": "Oh, there actually is someone here, I didn't expect that (maybe small for surprise?)"
