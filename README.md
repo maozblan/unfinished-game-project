@@ -53,14 +53,16 @@ elements to note:
 - `sceneKey` is the scene key, it can be any string with no spaces, MUST BE UNIQUE
   - the scene object must contain a `text` object; the `modifiers` object is optional
 - `text` is a list of dialogue or choice objects:
-  - dialogue objects MUST have the following two keys: 
-    - `narrator` is the name of the narrator
-    - `text` is the text to display for that the narrator should talk about
+  - dialogue objects mostly will have the following keys: 
+    - `text` is the text to display (MUST HAVE)
+    - `narrator` is the name of the narrator (optional key)
+      - if there is a narrator, the text will be displayed after the narrator
   - choices objects MUST have the following two keys: 
     - `text` is the text to display as a link
     - `link` is the scene key for the scene it should switch to
       - if the scene key is the same as the key for this object, the scene will be rerendered
   - both objects can optionally have the `modifier` key to overwrite or add any modifiers for tht line
+  - you can optionally add your own keys that are not any of the listed above for sake of organization
 
 for customization, see modifiers below
 
@@ -82,6 +84,22 @@ sceneKey: {
   ]
 }
 ```
+
+#### text formatting
+
+simple markdown:
+format | how to use | display
+:--: | :-- | :-- 
+bold | `**sample text**` | <strong>sample text</strong>
+italics | `__sample text__` | <em>sample text</em>
+strikethrough | `~~sample text~~` | <del>sample text</del>
+
+CSS styling is also available, use `<PROPERTY:VALUE>text</PROPERTY>`; below are some examples
+format | how to use | display
+:--: | :-- | :-- 
+color | `<color:red>sample text</color>` | <span style="color: red;">sample text</span>
+size | `<font-size:8px>sample text</font-size>` | <span style="font-size:8px;">sample text</span>
+font | `<font-family:monospace>sample text</font-family>` | <span style="font-family:monospace;">sample text</span>
 
 ### additional modifiers
 
@@ -114,16 +132,16 @@ add to list to request, mark important ones please
 
 ```md
 - [ ] minigame support
-- [ ] support for modifiers
+- support for modifiers:
   - [ ] per line basis modifiers
     - [ ] timer delay
-    - [ ] color (HEX)
-    - [ ] size
+    - [x] color (HEX)
+    - [x] size
   - [ ] per scene basis modifers
     - [ ] change text size starting from x-dialogue
     - [ ] glitch
     - [ ] SET game settings / IF game settings
-- [x] italics and bold with __ and **
-- [ ] typewriter effect
-- [x] be able to go dialog, choice, dialog etc. in the same scene
+  - [x] italics and bold with __ and **
+  - [ ] typewriter effect
+  - [x] be able to go dialog, choice, dialog etc. in the same scene
 ```

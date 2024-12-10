@@ -47,15 +47,29 @@ function loadDialogue(dialogue) {
 
 function createDialogue(dialogue) {
   const div = document.createElement("div");
-  div.classList.add("dialogue", clean(dialogue.narrator));
-  div.innerHTML = `
-    <p class="narrator">
+  if (Array.isArray(dialogue.text)) {
+    div.innerHTML = "";
+    dialogue.text.forEach((text) => {
+      div.innerHTML += `
+        <p class="text">
+          ${marked(text)}
+        </p>
+      `;
+    });
+  } else {
+    div.innerHTML = `
+      <p class="text">
+        ${marked(dialogue.text)}
+      </p>
+    `;
+  }
+  if (dialogue.narrator) {
+    div.classList.add("dialogue", clean(dialogue.narrator));
+    div.innerHTML =
+      `<p class="narrator">
       ${GAME_SETTINGS.savedNames[dialogue.narrator] ?? dialogue.narrator}: 
-    </p>
-    <p class="text">
-      ${marked(dialogue.text)}
-    </p>
-  `;
+      </p>` + div.innerHTML;
+  }
   return div;
 }
 
@@ -109,10 +123,9 @@ function clean(string) {
 }
 
 function marked(md) {
-  console.log(md, md.search(/<(.+?):(.+)>(.+)<\/\1>/g));
   return md
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/\_\_(.+?)\_\_/g, "<em>$1</em>")
     .replace(/\~\~(.+?)\~\~/g, "<del>$1</del>")
-    .replace(/<(\w+?):(.+?)>(.+?)<\/\1>/g, `<span style="$1: $2;">$3</span>`);
+    .replace(/<([\w\-]+?):(.+?)>(.+?)<\/\1>/g, `<span style="$1: $2;">$3</span>`);
 }

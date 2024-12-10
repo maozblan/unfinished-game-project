@@ -6,7 +6,7 @@
     "text": [
       {
         "narrator": "A",
-        "text": "Wait, do you hear that? <br>Is someone there?"
+        "text": ["Wait, do you hear that?", "Is someone there?"]
       },
       {
         "narrator": "B",
@@ -29,9 +29,7 @@
         "text": "...",
         "link": "stay silent"
       }
-    ],
-    "modifiers": {
-    }
+    ]
   },
   "Player Noticed": {
     "text": [
