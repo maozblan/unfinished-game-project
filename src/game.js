@@ -48,16 +48,8 @@ async function loadScene(key) {
       !condition(currentModifiers.RENDER_CONDITION)
     ) {
       continue;
-    applyModifiers(text.modifiers);
-
-    if (
-      currentModifiers.RENDER_CONDITION &&
-      !condition(currentModifiers.RENDER_CONDITION)
-    ) {
-      continue;
     }
 
-    await delay((currentModifiers.delay ?? GAME_SETTINGS.delay) * 1000);
     await delay((currentModifiers.delay ?? GAME_SETTINGS.delay) * 1000);
 
     // if scene has been changed by the time delay is over
@@ -65,7 +57,6 @@ async function loadScene(key) {
 
     if (text.link) {
       div.append(createChoice(text));
-    } else {
     } else {
       div.append(createDialogue(text));
     }
@@ -122,7 +113,6 @@ function createChoice(choice) {
   `;
   div.addEventListener("click", () => {
     setSettingChanges(choice.modifiers);
-    setSettingChanges(choice.modifiers);
     loadScene(choice.link);
   });
   return div;
@@ -133,13 +123,9 @@ function createChoice(choice) {
 function applyModifiers(modifiers) {
   if (modifiers === null) currentModifiers = {};
   else currentModifiers = { ...modifiers };
-function applyModifiers(modifiers) {
-  if (modifiers === null) currentModifiers = {};
-  else currentModifiers = { ...modifiers };
 }
 
 function delay(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
@@ -195,39 +181,6 @@ function setSettingChanges(modifiers) {
   }
 }
 
-// applies game setting modifiers
-function setSettingChanges(modifiers) {
-  if (!modifiers) return;
-
-  apply(modifiers.SET, set);
-  apply(modifiers.CHANGE, change);
-  apply(modifiers.TOGGLE, toggle);
-
-  function apply(values, func) {
-    if (!values) return;
-    if (Array.isArray(values[0])) {
-      values.forEach((value) => {
-        func(...value);
-      });
-    } else {
-      func(...values);
-    }
-  }
-
-  function set(key, value) {
-    GAME_SETTINGS.vars[key] = value;
-  }
-  function change(key, value) {
-    // assume variable = zero if does not exist
-    if (!GAME_SETTINGS.vars[key]) GAME_SETTINGS.vars[key] = 0;
-    GAME_SETTINGS.vars[key] += value;
-  }
-  function toggle(key) {
-    if (!GAME_SETTINGS.vars[key]) GAME_SETTINGS.vars[key] = false;
-    GAME_SETTINGS.vars[key] = !GAME_SETTINGS.vars[key];
-  }
-}
-
 // utility functions ///////////////////////////////////////////////////////////
 
 function clean(string) {
@@ -237,52 +190,12 @@ function clean(string) {
 function marked(md) {
   return md
     .replace(/[$]([\w]+[-_\d\w]*)/g, (match, p1) => {
-      return GAME_SETTINGS.vars[`${p1}`] || '0';
+      const tmp = GAME_SETTINGS.vars[`${p1}`];
+      return tmp !== undefined ? tmp.toString() : '0';
     })
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/\_\_(.+?)\_\_/g, "<em>$1</em>")
     .replace(/\~\~(.+?)\~\~/g, "<del>$1</del>")
-    .replace(
-      /<([\w\-]+?):(.+?)>(.+?)<\/\1>/g,
-      `<span style="$1: $2;">$3</span>`
-    );
-}
-
-// for future iterations if we use node, check out { Parser } from 'expr-eval'
-function condition(cond) {
-  const wordRegex = /[$]?[A-Za-z0-9]+(?:[-_][A-Za-z0-9]+)*/g;
-  const [ret, params] = parseCondition(cond);
-  const func = new Function(params, `return ${ret};`);
-  return func(...parseParameters(cond));
-
-  function parseCondition(c) {
-    let termCount = 0;
-    const terms = new Map();
-
-    const ret = c.replace(wordRegex, (match) => {
-      if (match.match(/^\d+$/)) return String.fromCharCode(97 + termCount++);
-      if (!terms.has(match)) {
-        terms.set(match, String.fromCharCode(97 + termCount++)); // ASCII for 'a' starts from 97
-      }
-      return terms.get(match);
-    });
-    return [ret, [...new Set(ret.match(/\w+/g))]];
-  }
-  function parseParameters(cond) {
-    return cond
-      .match(wordRegex)
-      .filter((varName, index, self) => {
-        if (varName.match(/^-?\d{1,3}(?:,\d{3})*(\.\d+)?$/g)) return true;
-        if (self.indexOf(varName) !== index) return false;
-        return true;
-      })
-      .map((varName) => {
-        if (varName.startsWith("$")) {
-          return GAME_SETTINGS.vars[varName.slice(1)];
-        }
-        return varName;
-      });
-  }
     .replace(
       /<([\w\-]+?):(.+?)>(.+?)<\/\1>/g,
       `<span style="$1: $2;">$3</span>`
