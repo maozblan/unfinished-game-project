@@ -68,11 +68,14 @@ async function loadScene(key) {
     // if scene has been changed by the time delay is over
     if (key !== currentScene.key || load !== currentScene.load) return;
 
+    let textObj = null;
     if (text.link) {
-      div.append(createChoice(text));
+      textObj = createChoice(text);
     } else {
-      div.append(createDialogue(text));
+      textObj = createDialogue(text);
     }
+    div.append(textObj);
+    textObj.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
   }
 }
 
