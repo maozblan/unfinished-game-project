@@ -68,16 +68,26 @@ async function loadScene(key) {
     // if scene has been changed by the time delay is over
     if (key !== currentScene.key || load !== currentScene.load) return;
 
-    if (text.link) {
-      div.append(createChoice(text));
-    } else {
-      div.append(createDialogue(text));
+    // minigame
+    if (text.game) {
+      loadMinigame(text.game);
+      continue;
     }
+    
+    // dialogue or choice
+    let textObj = null;
+    if (text.link) {
+      textObj = createChoice(text);
+    } else {
+      textObj = createDialogue(text);
+    }
+    div.append(textObj);
+    textObj.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
   }
 }
 
-function loadMinigame(gameFunc) {
-  // load minigame from minigames file
+function loadMinigame(funcName) {
+  globalThis[funcName]();
 }
 
 // loading scene ///////////////////////////////////////////////////////////////
