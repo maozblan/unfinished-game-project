@@ -2,7 +2,7 @@
   "settings": {
   },
   "scenes": {
-  "Start": {
+  "start": {
     "text": [
       {
         "narrator": "A",
@@ -17,25 +17,91 @@
         "text": "No I'm serious, I think someone's here! ahem,"
       },
       {
-        "narrarator": "A",
+        "narrator": "A",
         "text": "**Hello Player, welcome to our game!**"
       },
       {
         "text": "Who me?",
-        "link": "Player Noticed"
+        "link": "player noticed"
       },
       {
         "comment": "should appear after a delay",
         "text": "...",
-        "link": "stay silent"
+        "link": "stay hidden"
       }
     ]
   },
-  "Player Noticed": {
+  "player noticed": {
     "text": [
       {
         "narrator": "A",
-        "text": "Oh, there actually is someone here, I didn't expect that (maybe small for surprise?)"
+        "text": "Oh this is so exciting! We actually have a player here!"
+      },
+      {
+        "narrator": "B",
+        "text": "How interesting..."
+      },
+      {
+        "narrator": "A",
+        "text": "We're so glad you're here player, you won't be dissapointed youre here!"
+      },
+      {
+        "narrator": "B",
+        "text": "Is that not a bit presumptious?" 
+      },
+      {
+        "narrator": "A",
+        "text": ["Of course not! Its gonna be great, just trust me here", "",
+        "So Player, we're really glad youre here, especially cuz we need some help with some things. It'll be like a side quest! how exciting!",  
+        "I __promise__ you'll have a good time.",
+        "You see, we're making this game. and I promise its really cool, we just need some help finishing it, would you care to help us?"]
+      },
+      {
+        "text": "Sure!",
+        "link": "agree to help"
+      },
+      {
+        "text": "No",
+        "link": "refuse to help"
+      },
+      {
+        "text": "Wait, what do you mean? Game?",
+        "link": "question help game"
+      },
+      {
+        "text": "Do I have to?",
+        "link": "question choice to help"
+      },
+      {
+        "text": "Wait slow down, who even are you?",
+        "link": "question narrator identity"
+      }
+    ]
+  },
+  "agree to help": {
+    "text": [
+      {
+        "narrator": "A",
+        "text": ["Oh, Great!", 
+        "uhm, I'm actually going to need a second, you don't mind waiting do you?", 
+        "I hope you won't mind waiting a bit"]
+      },
+      {
+        "delay": 5,
+        "narrator": "A",
+        "text": ["Alright, great, I've got __just__ the task for you now!",
+        "We need some help getting our engine started, could you go give it a whirl?",
+        "Its just over there, in that room"]
+      },
+      {
+        "delay": 6,
+        "text": "Okay sure",
+        "link": "go to engine room"
+      },
+      {
+        "delay": 6,
+        "text": "Isn't there anything else I could do?",
+        "link": "refuse to help"
       }
     ]
   }

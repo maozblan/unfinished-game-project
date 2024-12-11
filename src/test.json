@@ -9,11 +9,6 @@
                 "text": "start"
             },
             {
-                "delay": 5,
-                "narrator": "A",
-                "text": "end"
-            },
-            {
                 "delay": 3,
                 "text": "delayed choice",
                 "link": "player noticed"

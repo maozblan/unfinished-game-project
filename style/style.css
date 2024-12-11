@@ -1,6 +1,7 @@
 p {
   font-family: monospace;
   cursor: default;
+  font-size: 2em;
 }
 
 .choice {
