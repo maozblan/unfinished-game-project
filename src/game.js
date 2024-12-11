@@ -68,6 +68,13 @@ async function loadScene(key) {
     // if scene has been changed by the time delay is over
     if (key !== currentScene.key || load !== currentScene.load) return;
 
+    // minigame
+    if (text.game) {
+      loadMinigame(text.game);
+      continue;
+    }
+    
+    // dialogue or choice
     let textObj = null;
     if (text.link) {
       textObj = createChoice(text);
@@ -79,8 +86,8 @@ async function loadScene(key) {
   }
 }
 
-function loadMinigame(gameFunc) {
-  // load minigame from minigames file
+function loadMinigame(funcName) {
+  globalThis[funcName]();
 }
 
 // loading scene ///////////////////////////////////////////////////////////////
