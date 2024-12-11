@@ -61,7 +61,7 @@ elements to note:
     - `text` is the text to display as a link
     - `link` is the scene key for the scene it should switch to
       - if the scene key is the same as the key for this object, the scene will be rerendered
-  - both objects can optionally have the `modifier` key to overwrite or add any modifiers for tht line
+  - both objects can optionally have the `modifiers` key to overwrite or add any modifiers for tht line
   - you can optionally add your own keys that are not any of the listed above for sake of organization
 
 for customization, see modifiers below
@@ -113,18 +113,24 @@ scenes: {
   sceneKey: {
     text: [
       {
-        modifier: {
+        modifiers: {
           // per-line additional modifiers here
         },
         ...
       }
     ],
-    modifier: {
+    modifiers: {
       // per-scene modifiers here!
     }
   }
 }
 ```
+
+setting any modifier in `settings` will automatically apply it to all lines and scenes. please check the usability row to see if the modifier is available in settings, scenes, lines, or all
+
+modifier key | modifier value | description | usability
+:-- | :-- | :-- | :-- 
+delay | number in seconds | delays message for x number of seconds (messages are displayed sequentially) | all
 
 # list of things being worked on
 
@@ -133,11 +139,11 @@ add to list to request, mark important ones please
 ```md
 - [ ] minigame support
 - support for modifiers:
-  - [ ] per line basis modifiers
-    - [ ] timer delay
+  - per line basis modifiers
+    - [x] timer delay
     - [x] color (HEX)
     - [x] size
-  - [ ] per scene basis modifers
+  - per scene basis modifers
     - [ ] change text size starting from x-dialogue
     - [ ] glitch
     - [ ] SET game settings / IF game settings

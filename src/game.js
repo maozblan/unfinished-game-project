@@ -1,6 +1,7 @@
 let GAME_SCRIPT = {};
 let GAME_SETTINGS = {
   savedNames: {},
+  delay: 0,
 };
 let timeouts = [];
 
@@ -8,6 +9,14 @@ const div = document.getElementById("scene");
 
 document.addEventListener("DOMContentLoaded", async () => {
   loadGameSave();
+  const res = await fetch("./src/game.json");
+  const content = await res.text();
+  GAME_SETTINGS = {
+    ...GAME_SETTINGS,
+    ...JSON.parse(content).settings
+  };
+  console.log(GAME_SETTINGS);
+  startGame(JSON.parse(content).scenes);
   const res = await fetch("./src/test.json");
   startGame(JSON.parse(await res.text()).scenes);
 });
@@ -21,8 +30,16 @@ function startGame(script) {
   loadScene(Object.keys(GAME_SCRIPT)[0]);
 }
 
-function loadScene(key) {
+async function loadScene(key) {
   clearScreen();
+  for (const text of GAME_SCRIPT[key].text) {
+    // set empty modifiers
+    if (text.modifiers === undefined) {
+      text.modifiers = {};
+    }
+
+    await wait((text.modifiers.delay ?? GAME_SETTINGS.delay) * 1000);
+
   clearDelays();
   GAME_SCRIPT[key].text.forEach((text) => {
 
@@ -43,7 +60,7 @@ function loadScene(key) {
     else {
       div.append(createDialogue(text));
     }
-  });
+  }
 }
 
 function loadMinigame(gameFunc) {
@@ -136,6 +153,10 @@ function addStyle(selector, styles = {}) {
 }
 
 // utility functions ///////////////////////////////////////////////////////////
+
+function wait(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 function clean(string) {
   return string.replace(/\s/g, "-");
