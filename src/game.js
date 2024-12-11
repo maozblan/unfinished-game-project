@@ -4,7 +4,7 @@ let GAME_SETTINGS = {
   savedNames: {},
   delay: 0,
 };
-let currentModifiers = {};
+let currentModifiers = { scene: {}, text: {} };
 let currentScene = { key: "", load: 0 };
 
 const div = document.getElementById("scene");
@@ -13,19 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   loadGameSave();
   const res = await fetch("./src/game.json");
   const content = await res.text();
-  // set game settings
-  GAME_SETTINGS = {
-    ...GAME_SETTINGS,
-    ...JSON.parse(content).settings,
-  };
-
-  // set user-defined styles
-  if (GAME_SETTINGS.styles) {
-    for (const key in GAME_SETTINGS.styles) {
-      addStyle(key, GAME_SETTINGS.styles[key]);
-    }
-  }
-  delete GAME_SETTINGS.styles;
+  applyModifiers(JSON.parse(content).settings, "settings");
 
   // :D
   startGame(JSON.parse(content).scenes);
@@ -41,6 +29,9 @@ function startGame(script) {
 }
 
 async function loadScene(key) {
+  clearScreen();
+  clearStyles("scene-style");
+
   // track reloads of the same scene
   if (currentScene.key !== key) {
     currentScene = { key, load: 0 };
@@ -49,19 +40,30 @@ async function loadScene(key) {
   }
   const load = currentScene.load;
 
+  // scene based modifiers
+  applyModifiers(GAME_SCRIPT[key].modifiers, "scene");
+  if (currentModifiers.scene.styles) {
+    for (const key in currentModifiers.scene.styles) {
+      addStyle(key, currentModifiers.scene.styles[key], "scene-style");
+    }
+  }
+
   // scene rendering
-  clearScreen();
   for (const text of GAME_SCRIPT[key].text) {
-    applyModifiers(text.modifiers);
+    applyModifiers(text.modifiers, "text");
 
     if (
-      currentModifiers.RENDER_CONDITION &&
-      !condition(currentModifiers.RENDER_CONDITION)
+      currentModifiers.text.RENDER_CONDITION &&
+      !condition(currentModifiers.text.RENDER_CONDITION)
     ) {
       continue;
     }
 
-    await delay((currentModifiers.delay ?? GAME_SETTINGS.delay) * 1000);
+    await delay(
+      (currentModifiers.text.delay ??
+        currentModifiers.scene.delay ??
+        GAME_SETTINGS.delay) * 1000
+    );
 
     // if scene has been changed by the time delay is over
     if (key !== currentScene.key || load !== currentScene.load) return;
@@ -84,8 +86,7 @@ function clearScreen() {
 }
 
 function loadDialogue(dialogue) {
-  const div = createDialogue(dialogue);
-  applyModifiers(dialogue.modifiers, div);
+  createDialogue(dialogue);
 }
 
 function createDialogue(dialogue) {
@@ -131,9 +132,27 @@ function createChoice(choice) {
 
 // modifier handling ///////////////////////////////////////////////////////////
 
-function applyModifiers(modifiers) {
-  if (modifiers === null) currentModifiers = {};
-  else currentModifiers = { ...modifiers };
+function applyModifiers(modifiers, type) {
+  if (type === "settings") {
+    if (!modifiers) return;
+    GAME_SETTINGS = { ...GAME_SETTINGS, ...modifiers };
+    if (modifiers.styles) {
+      clearStyles();
+      for (const key in GAME_SETTINGS.styles) {
+        addStyle(key, GAME_SETTINGS.styles[key]);
+      }
+    }
+    return;
+  }
+  if (modifiers === null) {
+    currentModifiers[type] = {};
+    return;
+  }
+  currentModifiers[type] = { ...modifiers };
+  if (currentModifiers[type].overwrite) {
+    applyModifiers(currentModifiers[type].overwrite, "settings");
+    delete currentModifiers[type].overwrite;
+  }
 }
 
 function delay(ms) {
@@ -149,14 +168,17 @@ function typewrite(text, display, index = 0) {
   }
 }
 
-function addStyle(selector, styles = {}) {
-  document.getElementById("user-defined-styles").innerHTML += `
+function addStyle(selector, styles = {}, id = "game-style") {
+  document.getElementById(id).innerHTML += `
     ${selector} {
       ${Object.entries(styles)
         .map(([key, value]) => `${key}: ${value};`)
         .join("\n")}
     }
   `;
+}
+function clearStyles(id = "game-style") {
+  document.getElementById(id).innerHTML = "";
 }
 
 // applies game setting modifiers
@@ -202,7 +224,7 @@ function marked(md) {
   return md
     .replace(/[$]([\w]+[-_\d\w]*)/g, (match, p1) => {
       const tmp = GAME_SETTINGS.vars[`${p1}`];
-      return tmp !== undefined ? tmp.toString() : '0';
+      return tmp !== undefined ? tmp.toString() : "0";
     })
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/\_\_(.+?)\_\_/g, "<em>$1</em>")
