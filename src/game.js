@@ -2,12 +2,13 @@ let GAME_SCRIPT = {};
 let GAME_SETTINGS = {
   savedNames: {},
 };
+let timeouts = [];
 
 const div = document.getElementById("scene");
 
 document.addEventListener("DOMContentLoaded", async () => {
   loadGameSave();
-  const res = await fetch("./src/game.json");
+  const res = await fetch("./src/test.json");
   startGame(JSON.parse(await res.text()).scenes);
 });
 
@@ -22,10 +23,24 @@ function startGame(script) {
 
 function loadScene(key) {
   clearScreen();
+  clearDelays();
   GAME_SCRIPT[key].text.forEach((text) => {
+
     if (text.link) {
-      div.append(createChoice(text));
-    } else {
+      if (text.delay) {
+        delay(text.delay, () => {
+          div.append(createChoice(text));
+        });
+      }
+      else div.append(createChoice(text));
+
+    } else if (text.delay) {
+      // added possible delay field to text
+      delay(text.delay, () => {
+        div.append(createDialogue(text));
+      });
+    }
+    else {
       div.append(createDialogue(text));
     }
   });
@@ -92,9 +107,13 @@ function applyModifiers(modifiers, element) {
 }
 
 function delay(seconds, callback) {
-  setTimeout(() => {
+  timeouts.push(setTimeout(() => {
     callback();
-  }, seconds * 1000);
+  }, seconds * 1000));
+}
+
+function clearDelays() {
+  timeouts.forEach((timeout) => clearTimeout(timeout));
 }
 
 function typewrite(text, display, index = 0) {
