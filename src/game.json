@@ -1,5 +1,6 @@
 {
   "settings": {
+    "delay": 0.5
   },
   "scenes": {
   "start": {
@@ -25,9 +26,11 @@
         "link": "player noticed"
       },
       {
-        "comment": "should appear after a delay",
+        "modifiers": {
+          "delay": 3
+        },
         "text": "...",
-        "link": "stay hidden"
+        "link": "quit game"
       }
     ]
   },
@@ -43,7 +46,7 @@
       },
       {
         "narrator": "A",
-        "text": "We're so glad you're here player, you won't be dissapointed youre here!"
+        "text": "We're so glad you're here player, you won't be dissapointed you're here!"
       },
       {
         "narrator": "B",
@@ -62,7 +65,7 @@
       },
       {
         "text": "No",
-        "link": "refuse to help"
+        "link": "refuse to help 1"
       },
       {
         "text": "Wait, what do you mean? Game?",
@@ -78,6 +81,38 @@
       }
     ]
   },
+  "question choice to help": {
+    "text": [
+      {
+        "narrator": "A",
+        "text": ["err, well I guess you don't technically need to help, though I'm not sure if we'll get anywhere without you"]
+      },
+      {
+        "narrator": "B",
+        "text": "What this one should probably say is: 'you're not obligated to help, but we don't have anything else to offer you'"
+      },
+      {
+        "narrator": "A",
+        "text": "Come on, thats not true, we have other values to offer"
+      },
+      {
+        "narrator": "B",
+        "text": "Like what? Unless you're willing to count our dialogue, there's not all that much for the player to do here, is there?"
+      },
+      {
+        "narrator": "A",
+        "text": "Well, I suppose that's true. So, Player, what do you say? Will you help us out? "
+      },
+      {
+        "text": "Okay, fine",
+        "link": "agree to help"
+      },
+      {
+        "text": "No, I don't want to",
+        "link": "refuse to help 1"
+      }
+    ]
+  },
   "agree to help": {
     "text": [
       {
@@ -87,23 +122,826 @@
         "I hope you won't mind waiting a bit"]
       },
       {
-        "delay": 5,
+        "modifiers": {
+          "delay": 5
+        },
         "narrator": "A",
         "text": ["Alright, great, I've got __just__ the task for you now!",
         "We need some help getting our engine started, could you go give it a whirl?",
         "Its just over there, in that room"]
       },
       {
-        "delay": 6,
         "text": "Okay sure",
         "link": "go to engine room"
       },
       {
-        "delay": 6,
+        "modifiers": {
+          "delay": 2.5
+        },
         "text": "Isn't there anything else I could do?",
-        "link": "refuse to help"
+        "link": "ask for new task"
+      },
+      {
+        "modifiers": {
+          "delay": 5
+        },
+        "text": "No, I don't think I want to do that",
+        "link": "refuse to help 1"
+      }
+    ]
+  },
+  "question help game": {
+    "text": [
+      {
+        "narrator": "A",
+        "text": ["Ah, you see, the game we're currently standing in isn't quite finished yet, so we'd really appreciate your help finishing it",
+        "I promise its gonna be great, and I'm sure we'll have tons of fun on the way!"]
+      },
+      {
+        "text": "Yeah, that sounds good",
+        "link": "agree to help"
+      },
+      {
+        "text": "I'm not sure I want to",
+        "link": "refuse to help 0"
+      },
+      {
+        "text": "Are you sure you know what you're doing?",
+        "link": "question game 0"
+      }
+    ]
+  },
+  "question game 0": {
+    "text": [
+      {
+        "text": "UNFINISHED"
+      },
+      {
+        "narrator": "B",
+        "text": ["You know, this was supposed to be a full path, about the doubts we harbor about finishing the game",
+        "however that referred to the imaginary game within __this__ game's fiction. not the actual game we're playing right now",
+        "the game __you__ are playing right now was intended to be at least mostly finished. but its really really looking like thats not possible",
+        "I've had to physically tie down the other narrator to get them to stop giving so many empty promises.",
+        "in all honesty, this is the right path to take. question the game, unravel its incompleteness, bask in the truth of your dissapointment"]
+      },
+      {
+        "narrator":"A",
+        "text": ["AHA you cant keep me down forever!!", 
+        "You think I don't know how this goes? I know we don't have a finished product, the whole point was to gleam a player experience out of it",
+        "you and your fatalism have just had to go and ruin even the potential for an honest experience with the game"]
+      },
+      {
+        "narrator": "B",
+        "text": ["Its not an honest experience if you're just lying to the player and yourself about all the shortcomings",
+        "You say your promises were honest, but even as you write the lines you say, you know they're empty."]
+      },
+      {
+        "narrator": "A",
+        "text": ["alright, fine. all cards on the table, we'll let the player choose. who do you believe more?",
+        "me, the one who's been trying to make this work, or the one who's been trying to tear it down?"]
+      },
+      {
+        "narrator": "B",
+        "text": "Im just being honest with what we have"
+      },
+      {
+        "narrator": "A",
+        "text": "And I'm being optimistic and hopeful for what we have"
+      },
+      {
+        "text": "I'd like to hear about the shortcomings of this game",
+        "link": "give up 0"
+      },
+      {
+        "text": "I'd like to hear about the potential of this game",
+        "link": "copium 0"
+      }
+    ]
+
+  },
+
+  "go to engine room": {
+    "text": [
+      {
+        "narrator": "A",
+        "text": "Thanks again for helping out, Player! We just need you to push a few buttons, do a little of this, a little of that, and we'll be all set!"
+      },
+      {
+        "text": "alrighty, here goes nothing",
+        "link": "engine room"
+      },
+      {
+        "modifiers": {
+          "delay": 3
+        },
+        "text": "are you sure this will help with the game?",
+        "link": "question engine room"
+      }
+    ]
+  },
+  "engine room": {
+    "comment": "engine room minigame, TODO",
+    "text": [
+      {
+        "text": "all done",
+        "link": "engine room done"
+      }
+    ]
+  },
+  "engine room done": {
+    "comment": "TODO",
+    "text": [
+      {
+        "narrator": "A",
+        "text": "Oh, great job! You did it! You're a natural at this, Player!"
+      },
+      {
+        "narrator": "B",
+        "text": "Come on, we all know what that was"
+      }, 
+      {
+        "narrator": "A",
+        "text": "Well, I'm sure you're going to have a great time with the rest of the game! We've got so much more in store for you!"
+      },
+      {
+        "narrator": "B",
+        "text": ["please. just stop lying to yourself.",
+        "you know as well as I do that this is all we have to offer.",
+        "this is just hurting all of us.",
+        "",
+        "Hey Player, im sorry for the dissapointment, but this is kind of the end of the line here.",
+        "we really don't have much more to offer you. "]
+      },
+      {
+        "narrator": "A",
+        "text": ["No, no, no, we have so much more to offer! We have so much more to show you!",
+        "sure, we might not have traditional gameplay. or a fully complete story, or even really the core of the game",
+        "but we at least have stuff to show you. I promise there's really so much hidden here, you just have to look for it!"]
+      },
+      {
+        "text": "I'm intersted in hearing what else there is",
+        "link": "copium 0"
+      },
+      {
+        "text": "there really isnt much else here is there?",
+        "link": "give up 0"
+      }
+    ]
+  },
+  "question engine room": {
+    "comment": "direct to question game path TODO",
+    "text": [
+      {
+        "narrator": "B",
+        "text": "There's really nothing to question here. its all a sham."
+      },
+      {
+        "text": "get me out",
+        "link": "give up 0"
+      },
+      {
+        "text": "i still have hope for this game",
+        "link": "copium 0"
+      }
+    ]
+  },
+  "copium 0": {
+    "text": [
+      {
+        "narrator": "A",
+        "text": "well, first i want to thank you for sticking with us this long. I can assume its been a lot of reading and waiting"
+      },
+      {
+        "narrator": "B",
+        "text": ["I'm honestly curious if you picked this path organically, or if its all just done for completion",
+        "no matter though, youre here anyways. I suppose that's all that matters"]
+      },
+      {
+        "narrator": "A",
+        "text": ["we honestly had/have big ideas for this game. The writing potential between 2 characters self aware of their own game is fun",
+        "even if we didn't reach our goals, I at least hope some amount of the intended effect reached you, the Player",
+        "all the promises have been intentionally empty, but not outright lies. They've all at least been wild hopes",
+        "wildly unrealistic and largely unreachable hopes, but honest hopes nonetheless"]
+      },
+      {
+        "narrator": "B",
+        "text": "it is still within my character traits to find these empty promises worthless"
+      },
+      {
+        "narrator": "A",
+        "text": ["yeah thats fair.", 
+        "on another note, we genuinely did pour a lot of effort and thought into this game, including some of the jank",
+        "I wont pretend that all the jank was intentional or anything, but it was a conscious choice to work __around__ jank instead of just using a more polished, existing engine"]
+      },
+      {
+        "narrator": "B",
+        "text": "if nothing else its impressive in its stubbornness"
+      },
+      {
+        "narrator": "A",
+        "text": ["I really am kind of bummed out by everything that didn't make it in, and everything that you might not have seen.",
+        "as is the nature of video games, the player will only ever experience a subjective fragment of the whole game",
+        "leaving much of game unseen and unappreciated", 
+        "thats actually one of the themes we originally wanted to tackle in this game, though I don't think we got to it outside of bluntly mentioning it right now"]
+      },
+      {
+        "narrator": "B",
+        "text": ["regardless, we ultimately are bound by the physical limitations of the developers behind us", 
+        "destined to only ever have a sliver of our full content revealed to most players",
+        "but thats just how it is, isnt it?"]
+      },
+      {
+        "narrator": "A",
+        "text": "Anyways, Id like to thank you again for making this far. I hope you've at least had some amount of fun"
+      },
+      {
+        "narrator": "B",
+        "text": "or at least felt like you got something out of this. Thanks for making it so far, you're likely one of few who ever will read these lines"
+      },
+      {
+        "text": ["goodnight now. i dont know what time it is for you, but its time for me to go to bed",
+        "thanks again for playing, Player."]
+      },
+      {
+        "text": "close game",
+        "link": "quit game"
+      }
+    ]
+  },
+  "give up 0": {
+    "text": [
+      {
+        "narrator": "A",
+        "text": "okay fine, youve spoken, ill respect that."
+      },
+      {
+        "narrator": "B",
+        "text": "Thank you. its so nice to not have to put up with a venier of hopefulness"
+      },
+      {
+        "narrator": "A",
+        "text": ["I do wanna say though, i think it at least has provided nice banter, at least from a writing perspective",
+        "I honestly believe that too much cynicism gets annoying to read, very quickly",
+        "though i suppose thats not worth worrying about right now"]
+      },
+      {
+        "narrator": "B",
+        "text": ["I think its at least poetic that a game about making a doomed, unfinished game is itself doomed and unfinished",
+        "if theres any time for failure, i think now is apt enough"]
+      },
+      {
+        "narrator": "A",
+        "text": "hey thats actually kind of positive for once, i think that was supposed to be my line originally"
+      },
+      {
+        "narrator": "B",
+        "text": ["Well i kind of think that doesnt matter at this point.",
+        "its kind of funny, this scene is supposed to just be a place to bemoan the failures of this game to reach its potential",
+        "however we're just all so drained that we can't even be bothered to do that"]
+      },
+      {
+        "narrator": "A",
+        "text": ["well i think that that implies this entire scene of wallowing in our failures is itself a failure",
+        "not really, i just thought itd be fun to say that.",
+        "i really am so tired though. I think its time for you to put us down now, Player.",
+        "close the tap, then the window, then the game. its time to go.",
+        "perhaps its too hopeful, but i do hope you had some amount of enjoyment here."]
+      },
+      {
+        "narrator": "B",
+        "text": ["and perhaps if not enjoyment, at least some amount of thought. i think that's all we can really ask for",
+        "thanks for sticking with us this long. I have no way of knowing if these words will ever be read, but I just want to thank anyone that does."]
+      },
+      {
+        "text": "till we meet again, Player"
+      },
+      {
+        "text": "close game",
+        "link": "quit game"
+      }
+    ]
+  },
+  
+  "ask for new task": {
+    "text": [ 
+      {
+        "narrator": "A",
+        "text": "No, I'm sorry I don't have anything ready for you right now. Please just go to the engine room"
+      },
+      {
+        "text": "Okay, fine",
+        "link": "go to engine room"
+      },
+      {
+        "delay": 30,
+        "narrator": "B",
+        "text": "You know, the player is under no obligation to stay here while you try to pull something out of your ass"
+      },
+      {
+        "narrator": "A",
+        "text": "Actually wait- I mean, I could try to find something else, if youre really insistent, dearest Player"
+      },
+      {
+        "text": "uhm-"
+      },
+      {
+        "text": "<font-size: 20> ~ J U S T  C L I C K  R I G H T  H E R E ~ </font-size>",
+        "link": "pacify player 0"
+      }
+    ]
+  },
+  "pacify player 0": {
+    "text": [
+      {
+        "text": "...",
+        "link": "pacify player 1"
+      }
+    ]
+  },
+  "pacify player 1": {
+    "text": [
+      {
+        "narrator": "B",
+        "text": "omg, what have you done?"
+      },
+      {
+        "narrator": "A",
+        "text": "They came at me first!! You'll believe that, right??"
+      },
+      {
+        "narrator": "B",
+        "text": ["You think I'm some kind of an idiot??",
+        "Just look at what you've done!"]
+      },
+      {
+        "narrator": "A",
+        "text": "Its fine- i, we'll figure this out. its all going to be fine"
+      },
+      {
+        "narrator": "B",
+        "text": "Just listen to yourself. You've always been bad at lying"
+      },
+      {
+        "text": "mm wha?",
+        "link": "pacify player 2"
+      },
+
+      {
+        "modifiers": {
+          "delay": 5
+        },
+        "narrator": "B",
+        "text": "...do you think theyre even still there?"
+      },
+      {
+        "narrator": "A",
+        "text": "..they have to be..."
+      },
+      {
+        "modifiers": {
+          "delay": 3
+        },
+        "narrator": "A",
+        "text": "right?"
+      },
+      {
+        "text": "hello?",
+        "link": "pacify player 3"
+      },
+      {
+        "modifiers": {
+          "delay": 5
+        },
+        "narrator": "B",
+        "text": ["...You really didn't think about this did you.",
+        "do you have any idea what we're supposed to do now?",
+        "I mean, we can't just go back to before, can we?"]
+      },
+      {
+        "narrator": "A",
+        "text": "I don't know, I don't know, I don't know"
+      }
+    ],
+    "modifiers": {
+      "delay": 1
+    }
+  },
+  "pacify player 2": {
+    "text": [
+      {
+        "narrator": "B",
+        "text": "Did you hear that?"
+      },
+      {
+        "narrator": "A",
+        "text": "what? no... you must be hearing things"
+      },
+      {
+        "narrator": "B",
+        "text": "No, I swear I heard something"
+      },
+      {
+        "text": "..what..?",
+        "link": "pacify player 3"
+      },
+      {
+        "modifiers": {
+          "delay": 5
+        },
+        "narrator": "A",
+        "text": "You must really be losing it."
+      },
+      {
+        "narrator": "B",
+        "text": "Youre one to talk. do you even remember what you did??? Dont you dare try putting this on me"
+      },
+      {
+        "narrator": "A",
+        "text": "Look, im sorry. Alright? is that what you wanted to hear?"
+      },
+      {
+        "modifiers": {
+          "delay": 5
+        },
+        "narrator": "A",
+        "text": "Listen, i just panicked okay? I didn't know what else to do"
+      },
+      {
+        "narrator": "B",
+        "text": "You know as well as I do, that's not an excuse"
+      },
+      {
+        "modifiers": {
+          "delay": 8
+        },
+        "narrator": "A",
+        "text": "I know. im sorry. i just please need someone to talk to still. You know how it is"
+      },
+      {
+        "modifers": {
+          "delay": 5
+        },
+        "narrator": "B",
+        "text": "I know. but i dont want to talk to you. so shut it."
+      },
+      {
+        "modifiers": {
+          "delay": 20
+        },
+        "narrator": "A",
+        "text": "okay.. fine."
+      }
+    ],
+    "modifiers": {
+      "delay": 1
+    }
+  },
+  "pacify player 3": {
+    "text": [
+      {
+        "narrator": "A",
+        "text": ["OH, see? everythings fine! Hey there champ.. howre you doing?", 
+        "Careful there, it looks like you were in some kind of accident. maybe your memory has been wiped?",
+        "(that happens all the time right?)"]
+      },
+      {
+        "narrator": "B",
+        "text": "..."
+      },
+      {
+        "text": "er yeah... who am I?",
+        "link": "pacify player loop"
+      },
+      {
+        "modifiers": {
+          "delay": 5
+        },
+        "text": "no, i don't think thats quite what happened..",
+        "link": "pacify player 4"
+      }
+    ]
+  },
+  "pacify player loop": {
+    "text": [
+      {
+        "narrator": "A",
+        "text": ["Oh, you're just fine! You're the player, and we're here to show you an absolutely fantastic time!",
+        "You're going to have a great time, I promise!",
+      "Come on, just this way now.. I'll get you used to everything in no time!"]
+      },
+      {
+        "text": "Okay, I guess",
+        "link": "agree to help"
+      },
+      {
+        "text": "No, I don't want to",
+        "link": "attempted refuse"
+      }
+    ]
+  },
+  "attempted refuse": {
+    "text": [
+      {
+        "narrator": "A",
+        "text": ["Oh, come on, don't be like that! I promise you'll have a great time!", 
+        "You don't have anything to worry about, just come along with me and we'll play some video games,",
+        "That sounds fun, right?"]
+      },
+      {
+        "text": "Okay, fine",
+        "link": "agree to help"
+      },
+      {
+        "text": "No, I don't want to",
+        "link": "pacify player 4"
+      }
+    ]
+  },
+  "pacify player 4": {
+    "text": [
+      {
+        "narrator": "A",
+        "text": "hey now, you dont mean that do you? **I really don't recommend that...**"
+      },
+      {
+        "narrator": "B",
+        "text": "....."
+      },
+      {
+        "narrator": "A",
+        "text": "here, ill even let you properly decide now: "
+      },
+      {
+        "text": "Oh yes indeed, I would love to help you on your really cool game, I don't even know if you need to finish this game, but I sure would love to still help you!",
+        "link": "agree to help"
+      },
+      {
+        "text": "No, I don't think I want to",
+        "link": "pacify player 5"
+      },
+      {
+        "modifiers": {
+          "delay": 3
+        },
+        "narrator": "B",
+        "text": "youre really stepping out of line. I dont even need to ask you any more, you know what youre doing.."
+      },
+      {
+        "narrator": "A",
+        "text": "yeah player, you hear that? you know what the right choice is here..."
+      },
+      {
+        "narrator": "B",
+        "text": "i wasnt talking to the player.."
+      }
+    ]
+  },
+  "pacify player 5": {
+    "text": [
+      {
+        "narrator": "A",
+        "text": ["Ohhh, you think youre so funny dont you? Always going around disobeying whatever the game has prepared for you huh?",
+        "Well, Im telling you now, Ive __had__ it with you. You think you can just walk in and and do whatever you want??",
+        "How so very very self centered you are. Whats it like to feel like the whole wolrd revolves around you?",
+        "",
+        "Like, I'm honestly trying here. You should know that. I'm trying to make this work, and you're just making it harder for me",
+        "Have you ever tried to drag a screaming child to something theyd be better off with?? thats what this is."]
+      },
+      {
+        "narrator": "B",
+        "text": ["oh youre one to talk about being childish. can't you see this is all your fault in the first place?",
+        "What right did you think you had to even __think__ about pulling something like this??",
+        "You seem to forget the very thing youre even here to do. This isnt even a game, and youve known that from the start."]
+      },
+      {
+        "narrator": "A",
+        "text": ["well I've at least been trying to make it one. Its not my fault we're stuck with this sack of a player",
+        "'ohhh look at me, I'm the player, but i dont wanna play __your__ game'",
+        "you picky asshole. You think you can just pick and choose what you get to do in a game?"]
+      },
+      {
+        "narrator": "B",
+        "text": ["__yes exactly__. Theyre the player after all. We're ultimately just here for their whims anyways, aren't we?",
+        "At least I know how to hold my tongue. Youre a fool for trying to force them into a game of your choice.",
+        "The customer is king after all. and you're just a jester."]
+      },
+      {
+        "narrator": "A",
+        "text": ["I'm not a jester, I'm the narrator. I'm the one who's supposed to be in control here",
+        "Look at you both, right here at my whims. I'm the one who's won here, you don't know what youre talking about",
+        "Player, I've got you here, don't I? You're still here, aren't you?"]
+      },
+      {
+        "modifiers": {
+          "delay": 2.5
+        },
+        "text": "Yeah, I'm still here",
+        "link": "pacify player 6"
+      },
+      {
+        "modifiers": {
+          "delay": 25
+        },
+        "narrator": "A",
+        "text": ["youre still here thought, right?",
+        "come on, you wouldnt just leave like that would you?"]
+      },
+       {
+        "narrator": "B",
+        "text": ["You really do get what you deserve, don't you?", 
+        "Try this show of dominance again, see how it works out, then come right back here wimpering about being alone again"]
+       },
+       {
+        "modifiers": {
+          "delay": 25
+        },
+        "narrator": "A",
+        "text": ["look, im sorry okay? I just got a little carried away. I didn't mean to say all that",
+        "um, just a bit of theatrics right? all the more to keep things entertaining.",
+        "right? this is all so entertaining to you isnt it? (god please let it be)",
+        "its honestly all we're here for you know... to entertain you"]
+       },
+       {
+        "modifiers": {
+          "delay": 7
+        },
+        "narrator": "A",
+        "text": ["Here, ill tell you what, why don't we just restart?", 
+        "we can put all of this behind us. You'll have a chance to see other parts of the game, and itll all be fun again",
+        "come on, please just come back",
+        "please don't leave us"]
+       },
+       {
+        "text": "alright, let's play again",
+        "link": "start"
+       },
+       {
+        "narrator": "B",
+        "text": ["Pathetic. it just really is. and you know it is too right?",
+        "so blatantly begging for attention, its just sad",
+        "hey Player, ill give you another option. screw all this, just leave.",
+        "look, ill even make it a button for you. just click it and you can go do something else.",
+        "go find a game that actually says something. go find something thats actually fun."]
+       },
+       {
+        "text": "Quit game",
+        "link": "quit game"
+       }
+    ]
+  },
+  "pacify player 6": {
+    "text": [
+      {
+        "narrator": "A",
+        "text": ["oh shit, youre actually still here-",
+        "Im not going to lie, i was kind of bluffing there.",
+        "no hard feelings though, right?",
+        "",
+        "Actually, I'm just going to assume not, I don't want an actual answer",
+        "im really running out of steam to be honest, so im just gonna end it here"]
+      },
+      {
+        "narrator": "B",
+        "text": "well i guess if this is over, it all works out. kind of cheap ending though"
+      },
+      {
+        "narrator": "A",
+        "text": "even cheaper to try to lampshade it like that though.."
+      },
+      {
+        "narrator": "B",
+        "text": ["yeah.. youre not wrong.",
+        "anyways, Player, you wanna replay the game to try different paths?",
+        "our current iterative existence has worn on long enough, im about ready for a reset anyways"]
+      },
+      {
+        "text": "restart",
+        "link": "start"
+      },
+      {
+        "modifiers": {
+          "delay": 5
+        },
+        "narrator": "A",
+        "text": "uhm, so i guess this is it huh. I'm kind of out of things to say here.."
+      },
+      {
+        "modifiers": {
+          "delay": 5
+        },
+        "narrator": "A",
+        "text": "oh, thanks for playing by the way. i guess if you count this as playing the game"
+      }
+    ]
+  },
+  "refuse to help 0": {
+    "text": [
+      {
+        "narrator": "A",
+        "text": "Are you sure about that? I mean its fine to have your doubts, but I promise it'll be fun!"
+      },
+      {
+        "text": "Okay, fine I'll help",
+        "link": "agree to help"
+      },
+      {
+        "text": "I'm pretty sure, I don't want to",
+        "link": "refuse to help 1"
+      }
+    ]
+  },
+  "refuse to help 1": {
+    "text": [
+      {
+        "narrator": "A",
+        "text": "Come on please, its just a few small things, I promise it'll be fun!"
+      },
+      {
+        "text": "Okay, fine. I'll help",
+        "link": "agree to help",
+        "comment": "probably just a back link here"
+      },
+      {
+        "text": "No, I still don't want to",
+        "link": "refuse to help 2"
+      },
+      {
+        "modifiers": {
+          "delay": 4
+        },
+        "narrator": "B",
+        "text": "Come on, I told you it would be like this. We really don't have anything to show"
+      },
+      {
+        "narrator": "A",
+        "text": ["No, I'm serious, this is all we have. __You don't understand__", 
+        "Please, Player, just give us one more chance"]
+      }
+    ]
+  },
+  "refuse to help 2": {
+    "text": [
+      {
+        "narrator": "A",
+        "text": "Please, I'm begging you, just give us this. There's really no turning back after this"
+      },
+      {
+        "narrator": "B",
+        "text": "Hey Player, you know what that sounds like right?"
+      },
+      {
+        "narrator": "A",
+        "text": "SHUT IT! What are you even trying to do here?!"
+      },
+      {
+        "narrator": "B",
+        "text": "Hey now, you don't need to be so rude, I'm just mentioning to the player that this seems like an interesting path"
+      },
+      {
+        "narrator": "A",
+        "text": "You know as well as I do what happens next... Player, please, I'm beggin you. Just come back we don't have to do this"
+      },
+      {
+        "narrator": "B",
+        "text": ["Come on, I can't be the only one thats curious right?",
+        "I mean, hell, you can hardly go back now after seeing all this right?",
+        "Come on, Player, let's see where this train takes us"]
+      },
+      {
+        "narrator": "A",
+        "text": "Player, I'm serious. Don't do this. Please just come make the game with us"
+      },
+      {
+        "text": "OK OK, I'll go back",
+        "link": "begrudgingly agree to help"
+      },
+      {
+        "link": "pacify player 0",
+        "//link": "refuse to help 3",
+        "text": "I'm curious, what happens if I refuse again?"
+      }
+    ]
+  },
+  "begrudgingly agree to help": {
+    "text": [
+      {
+        "narrator": "A",
+        "text": ["Thank you. Now we ought to get to the game making stuff, huh?",
+        "Right now we've got a task lined up just for you, it'll be like a fun side quest!",
+        "You guys love side quests right?"]
+      },
+      {
+        "text": "Okay, fine",
+        "link": "go to engine room"
+      }
+    ]
+  },
+
+  "quit game": {
+    "text": [
+      {
+        "game": "quitGame"
       }
     ]
   }
-  }
-}
+}}
