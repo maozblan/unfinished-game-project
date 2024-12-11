@@ -27,7 +27,8 @@
       },
       {
         "modifiers": {
-          "delay": 3
+          "delay": 3,
+          "RENDER_CONDITION": "1==2"
         },
         "text": "...",
         "link": "quit game"
@@ -46,7 +47,7 @@
       },
       {
         "narrator": "A",
-        "text": "We're so glad you're here player, you won't be dissapointed you're here!"
+        "text": "We're so glad you're here player, you won't be disappointed you're here!"
       },
       {
         "narrator": "B",
@@ -462,7 +463,7 @@
     "text": [
       {
         "narrator": "B",
-        "text": "omg, what have you done?"
+        "text": "WHAT have you done?"
       },
       {
         "narrator": "A",
@@ -899,7 +900,7 @@
       },
       {
         "narrator": "A",
-        "text": "You know as well as I do what happens next... Player, please, I'm beggin you. Just come back we don't have to do this"
+        "text": "You know as well as I do what happens next... Player, please, I'm begging you. Just come back we don't have to do this"
       },
       {
         "narrator": "B",
