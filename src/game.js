@@ -15,10 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     ...GAME_SETTINGS,
     ...JSON.parse(content).settings
   };
-  console.log(GAME_SETTINGS);
   startGame(JSON.parse(content).scenes);
-  const res = await fetch("./src/test.json");
-  startGame(JSON.parse(await res.text()).scenes);
 });
 
 function loadGameSave() {
@@ -32,6 +29,7 @@ function startGame(script) {
 
 async function loadScene(key) {
   clearScreen();
+  clearDelays();
   for (const text of GAME_SCRIPT[key].text) {
     // set empty modifiers
     if (text.modifiers === undefined) {
@@ -40,23 +38,9 @@ async function loadScene(key) {
 
     await wait((text.modifiers.delay ?? GAME_SETTINGS.delay) * 1000);
 
-  clearDelays();
-  GAME_SCRIPT[key].text.forEach((text) => {
-
     if (text.link) {
-      if (text.delay) {
-        delay(text.delay, () => {
-          div.append(createChoice(text));
-        });
-      }
-      else div.append(createChoice(text));
-
-    } else if (text.delay) {
-      // added possible delay field to text
-      delay(text.delay, () => {
-        div.append(createDialogue(text));
-      });
-    }
+      div.append(createChoice(text));
+    } 
     else {
       div.append(createDialogue(text));
     }
