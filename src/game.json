@@ -1,6 +1,6 @@
 {
   "settings": {
-    "delay": 0.5
+    "delay": 1.5
   },
   "scenes": {
   "start": {
@@ -28,12 +28,21 @@
       {
         "modifiers": {
           "delay": 3,
-          "RENDER_CONDITION": "1==2"
+          "RENDER_CONDITION": "1==1"
         },
         "text": "...",
-        "link": "quit game"
+        "link": "player noticed"
       }
-    ]
+    ],
+    "modifiers": {
+      "styles": {
+        "#scene.content": {
+          "background-color": "black",
+          "background-image": "none !important",
+          "color": "white"
+        }
+      }
+    }
   },
   "player noticed": {
     "text": [
@@ -297,6 +306,19 @@
         "text": "There's really nothing to question here. its all a sham."
       },
       {
+        "narrator": "A",
+        "text": ["hey now, its too early to say that, please just go check it out",
+        "there's really not much to explain, just trust me this will work out - pleae"]
+      },
+      {
+        "text": "alright, take me to the engine room",
+        "link": "engine room"
+      },
+      {
+        "narrator": "B",
+        "text": "god, you can just smell the desperation can't you? come on player, just jump to the end. you know this is all we have"
+      },
+      {
         "text": "get me out",
         "link": "give up 0"
       },
@@ -457,7 +479,18 @@
         "text": "...",
         "link": "pacify player 1"
       }
-    ]
+    ],
+    "modifiers": {
+      "overwrite":{
+        "styles": {
+          "#scene.content": {
+            "background-color": "black",
+            "background-image": "url(../imgs/crackedScreen.png)",
+            "color": "white"
+          }
+        }
+      }
+    }
   },
   "pacify player 1": {
     "text": [
