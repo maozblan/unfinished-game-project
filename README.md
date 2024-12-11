@@ -101,6 +101,11 @@ color | `<color:red>sample text</color>` | <span style="color: red;">sample text
 size | `<font-size:8px>sample text</font-size>` | <span style="font-size:8px;">sample text</span>
 font | `<font-family:monospace>sample text</font-family>` | <span style="font-family:monospace;">sample text</span>
 
+you can also use game variables (SEE MODIFIERS SECTION ON HOW TO SET THEM)
+- use `$variableName` in your text anywhere
+  - ex. `text: "variableName has the value $variableName"`
+  - if the variable by variableName does not exist, it returns `UNDEFINED`
+
 ### additional modifiers
 
 additional modifiers can be applied in a whole game, per-line of dialogue or choice, or per-scene

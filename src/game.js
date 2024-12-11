@@ -234,7 +234,7 @@ function marked(md) {
   return md
     .replace(/[$]([\w]+[-_\d\w]*)/g, (match, p1) => {
       const tmp = GAME_SETTINGS.vars[`${p1}`];
-      return tmp !== undefined ? tmp.toString() : "0";
+      return tmp !== undefined ? tmp.toString() : "UNDEFINED";
     })
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/\_\_(.+?)\_\_/g, "<em>$1</em>")
@@ -277,6 +277,8 @@ function condition(cond) {
         if (varName.startsWith("$")) {
           return GAME_SETTINGS.vars[varName.slice(1)];
         }
+        else if (varName === 'false') return false;
+        else if (varName === 'true') return true
         return varName;
       });
   }
