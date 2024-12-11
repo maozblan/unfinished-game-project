@@ -11,12 +11,23 @@ const div = document.getElementById("scene");
 
 document.addEventListener("DOMContentLoaded", async () => {
   loadGameSave();
-  const res = await fetch("./src/varTest.json");
+  const res = await fetch("./src/game.json");
   const content = await res.text();
+  // set game settings
   GAME_SETTINGS = {
     ...GAME_SETTINGS,
     ...JSON.parse(content).settings,
   };
+
+  // set user-defined styles
+  if (GAME_SETTINGS.styles) {
+    for (const key in GAME_SETTINGS.styles) {
+      addStyle(key, GAME_SETTINGS.styles[key]);
+    }
+  }
+  delete GAME_SETTINGS.styles;
+
+  // :D
   startGame(JSON.parse(content).scenes);
 });
 
