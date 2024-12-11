@@ -3,7 +3,7 @@ let GAME_SETTINGS = {
   savedNames: {},
   delay: 0,
 };
-let timeouts = [];
+let currentScene = { key: "", load: 0 };
 
 const div = document.getElementById("scene");
 
@@ -28,15 +28,26 @@ function startGame(script) {
 }
 
 async function loadScene(key) {
+  // track reloads of the same scene
+  if (currentScene.key !== key) {
+    currentScene = {key, load: 0};
+  } else {
+    currentScene.load++;
+  }
+  const load = currentScene.load;
+
+  // scene rendering
   clearScreen();
-  clearDelays();
   for (const text of GAME_SCRIPT[key].text) {
     // set empty modifiers
     if (text.modifiers === undefined) {
       text.modifiers = {};
     }
 
-    await wait((text.modifiers.delay ?? GAME_SETTINGS.delay) * 1000);
+    await delay((text.modifiers.delay ?? GAME_SETTINGS.delay) * 1000);
+
+    // if scene has been changed by the time delay is over
+    if (key !== currentScene.key || load !== currentScene.load) return;
 
     if (text.link) {
       div.append(createChoice(text));
@@ -107,14 +118,8 @@ function applyModifiers(modifiers, element) {
   if (!modifiers) return;
 }
 
-function delay(seconds, callback) {
-  timeouts.push(setTimeout(() => {
-    callback();
-  }, seconds * 1000));
-}
-
-function clearDelays() {
-  timeouts.forEach((timeout) => clearTimeout(timeout));
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function typewrite(text, display, index = 0) {
@@ -137,10 +142,6 @@ function addStyle(selector, styles = {}) {
 }
 
 // utility functions ///////////////////////////////////////////////////////////
-
-function wait(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 function clean(string) {
   return string.replace(/\s/g, "-");
