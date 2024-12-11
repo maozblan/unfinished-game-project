@@ -1,6 +1,6 @@
 {
   "settings": {
-    "delay": 0.5
+    "delay": 1.5
   },
   "scenes": {
   "start": {
@@ -36,7 +36,7 @@
     ],
     "modifiers": {
       "styles": {
-        ".content": {
+        "#scene.content": {
           "background-color": "black",
           "background-image": "none !important",
           "color": "white"
@@ -483,7 +483,7 @@
     "modifiers": {
       "overwrite":{
         "styles": {
-          ".content": {
+          "#scene.content": {
             "background-color": "black",
             "background-image": "url(../imgs/crackedScreen.png)",
             "color": "white"
