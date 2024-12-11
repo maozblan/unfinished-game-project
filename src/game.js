@@ -131,7 +131,7 @@ function createChoice(choice) {
   const div = document.createElement("div");
   div.classList.add("choice");
   div.innerHTML = `
-    <p>${marked(choice.text)}</p>
+    <p class="text">${marked(choice.text)}</p>
   `;
   div.addEventListener("click", () => {
     setSettingChanges(choice.modifiers);

@@ -128,9 +128,88 @@ scenes: {
 
 setting any modifier in `settings` will automatically apply it to all lines and scenes. please check the usability row to see if the modifier is available in settings, scenes, lines, or all
 
+general modifiers:
 modifier key | modifier value | description | usability
 :-- | :-- | :-- | :-- 
+overwrite | dictionary of modifiers | any modifier value in the settings you want to overwrite | scenes, lines
 delay | number in seconds | delays message for x number of seconds (messages are displayed sequentially) | all
+styles | dictionary of css inputs (see below) | adds css in a basic css form | settings, overwrites
+
+#### styles
+
+value format: 
+```js
+styles: {
+  selector: {
+    property: value,
+    property: value
+  }
+}
+```
+
+sample: 
+```js
+styles: {
+  ".class": {
+    "background-color": "#abcdef"
+  },
+  "body": {
+    "color": "rgb(178, 71, 80)";
+  }
+}
+```
+
+preset keys:
+
+keys for dialogue:
+- all text under the `text` key are tagged with `.text`
+- all text is that has a narrator will be encased in a parent block tagged with `.dialogue` and narrator name
+  - individual narrative blocks are tagged with narrator name as class, ex. narrator A's blocks will be tagged with `.A`, any spaces will be replaced with hyphens
+- all choices with links are tagged with `.choice`
+
+
+keys for windows:
+windows are id-ed by minigame function name, the game where the narrative structure is id-ed `main` and can be accessed by `#main.window`, it's content can be accessed by `#main.window .content` or `#scene.content`
+
+selectors for ALL windows
+- `.window` selector for fake window tabs
+- `.window .content` box where tab content displays
+- `.window .tab` top bar of windows
+
+#### variables
+modifier key | modifier value | description | usability
+:-- | :-- | :-- | :-- 
+SET | `[string variable name, any value (number, string, boolean)]` | a list of variables to set, if you want to multiple variables, include a list of lists | scene, line
+CHANGE | `[string variable name, increment]` | a list of variables to change, if you want to multiple variables, include a list of lists | scene, line
+TOGGLE | `[string variable name]` | toggles the boolean variable (T -> F, F -> T) | scene, line
+RENDER_CONDITION | a text conditional that must return true false | only renders if conditional returns true | scene, line
+
+IMPORTANT NOTES:
+- variable names CANNOT start with underscores, hyphens, or numbers
+- variable names CANNOT include spaces
+- variable names can include characters, underscores, hypens, or numbers
+
+GENERAL NOTES:
+- SET can overwrite variables by the same name
+- CHANGE should only be given number type variables
+  - CHANGE-ing an unset variable sets it to 0 + increment
+- TOGGLE should only be given boolean type variables
+  - TOGGLE-ing an unset variable
+- RENDER_CONDITION uses standard JS operators (ex. <=, &&)
+
+samples:
+```js
+modifiers: {
+  SET: ['varName', 2], // setting an integer
+  CHANGE: ['varName', -1], // use negative numbers to decrement
+}
+...
+modifiers: {
+  SET: [['numVar', 2.4], ['boolVar', false]], // setting multiple variables at once
+  TOGGLE: ['boolVar'], // toggle sample
+  RENDER_CONDITION: "$numVar >= 2" // use $ to call variables
+}
+```
 
 # list of things being worked on
 
@@ -146,7 +225,7 @@ add to list to request, mark important ones please
   - per scene basis modifers
     - [ ] change text size starting from x-dialogue
     - [ ] glitch
-    - [ ] SET game settings / IF game settings
+    - [x] SET game settings / IF game settings
   - [x] italics and bold with __ and **
   - [ ] typewriter effect
   - [x] be able to go dialog, choice, dialog etc. in the same scene
