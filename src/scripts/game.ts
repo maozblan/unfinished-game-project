@@ -13,7 +13,6 @@ export async function start() {
   // only able to select div after svelte app mounts
   await delay(0.5);
   div = document.getElementById("scene");
-  console.log(div);
 
   loadGameSave();
   // running fetch in parallel
@@ -244,7 +243,7 @@ function clean(string) {
 
 function marked(md) {
   return md
-    .replace(/[$]([\w]+[-_\d\w]*)/g, (match, p1) => {
+    .replace(/[$]\{([\w]+[-_\d\w]*)\}/g, (match, p1) => {
       const tmp = GAME_SETTINGS.vars[`${p1}`];
       return tmp !== undefined ? tmp.toString() : "UNDEFINED";
     })
@@ -281,9 +280,9 @@ function closeWindow(windowDiv) {
 
 // for future iterations if we use node, check out { Parser } from 'expr-eval'
 function condition(cond) {
-  const wordRegex = /[$]?[A-Za-z0-9]+(?:[-_][A-Za-z0-9]+)*/g;
+  const wordRegex = /(?:\$\{)?[A-Za-z0-9]+(?:[-_][A-Za-z0-9]+)*\}?/g;
   const [ret, params] = parseCondition(cond);
-  const func = new Function(params, `return ${ret};`);
+  const func = new Function(...params, `return ${ret};`);
   return func(...parseParameters(cond));
 
   function parseCondition(c) {
@@ -309,7 +308,7 @@ function condition(cond) {
       })
       .map((varName) => {
         if (varName.startsWith("$")) {
-          return GAME_SETTINGS.vars[varName.slice(1)];
+          return GAME_SETTINGS.vars[varName.slice(2, -1)];
         }
         else if (varName === 'false') return false;
         else if (varName === 'true') return true
