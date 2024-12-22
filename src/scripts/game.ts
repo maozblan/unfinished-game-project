@@ -7,17 +7,22 @@ let GAME_SETTINGS = {
 let currentModifiers = { scene: {}, text: {} };
 let currentScene = { key: "", load: 0 };
 
-const div = document.getElementById("scene");
+let div = null;
 
-document.addEventListener("DOMContentLoaded", async () => {
+export async function start() {
+  // only able to select div after svelte app mounts
+  await delay(0.5);
+  div = document.getElementById("scene");
+  console.log(div);
+
   loadGameSave();
-  const res = await fetch("./src/varTest.json");
+  const res = await fetch(new URL("../../narrative/game.json", import.meta.url).href);
   const content = await res.text();
   applyModifiers(JSON.parse(content).settings, "settings");
 
   // :D
   startGame(JSON.parse(content).scenes);
-});
+}
 
 function loadGameSave() {
   // load in local stoage data
@@ -305,8 +310,3 @@ function condition(cond) {
       });
   }
 }
-
-document.addEventListener("keydown", () => {
-  console.log(toString(quitGame));
-  createWindow("test");
-});

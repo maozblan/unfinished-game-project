@@ -1,4 +1,4 @@
-function quitGame() {
+export function quitGame() {
   window.close();
 }
 
