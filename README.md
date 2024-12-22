@@ -1,26 +1,16 @@
 # unfinished game project
 
-hello hello, this is an "unfinished" game project for CMPM179
-
-- please insert your game text into `src/game.json`
-- there will be modifers for choices and links added later...
+hello hello, this is an "unfinished" game project for CMPM179 (experimental gameplay taught by prof wes modes)
 
 # how to use
 
-inside `src/` you can find the mock game engine we have built for this project in the file `game.js`. 
+for development mode, download the repo and run `npm install` and `npm run dev` to start
 
-narrative dialogue is stored `game.json` and will work as long as it follows this format:
+all narrative work will be found inside the `narrative` folder, split into two files:
+- `settings.json` holds all the settings that apply to the full game, see modifiers section to see what keys should go in here
+  - all keys should be a valid modifier or else will be ignored
+- `scenes.json` holds all the narrative scenes that will display for the game
 
-```js
-{
-  settings: {
-    // see list of modifiers below
-  },
-  scenes: {
-    // see scene structure below
-  }
-}
-```
 ## scene structure
 
 scenes should each be it's own object inside the top level scene dictionary, they should have a list of `dialogue` and `choices`. dialogue will just be rendered text while choices are links that take the player to other scenes.
@@ -28,7 +18,6 @@ scenes should each be it's own object inside the top level scene dictionary, the
 sample format:
 
 ```js
-// inside scenes: { ... here! }
 sceneKey: {
   text: [
     // this is plain text
@@ -67,8 +56,6 @@ elements to note:
 for customization, see modifiers below
 
 ## currently supported modifiers
-
-NONE. thank you...
 
 ### inline modifiers
 
@@ -111,29 +98,35 @@ you can also use game variables (SEE MODIFIERS SECTION ON HOW TO SET THEM)
 additional modifiers can be applied in a whole game, per-line of dialogue or choice, or per-scene
 
 ```js
-settings: {
-  // additional modifiers that affect the whole game go here
-},
-scenes: {
-  sceneKey: {
-    text: [
-      {
-        modifiers: {
-          // per-line additional modifiers here
-        },
-        ...
-      }
-    ],
-    modifiers: {
-      // per-scene modifiers here!
+// inside settings.json
+{
+  // modifiers that affect the whole game go here
+}
+
+// inside scenes.json
+sceneKey: {
+  text: [
+    {
+      modifiers: {
+        // per-line additional modifiers here
+      },
+      ...
     }
+  ],
+  modifiers: {
+    // per-scene modifiers here!
   }
 }
 ```
 
-setting any modifier in `settings` will automatically apply it to all lines and scenes. please check the usability row to see if the modifier is available in settings, scenes, lines, or all
+setting any modifier in `settings.json` will automatically apply it to all lines and scenes. please check the usability row to see if the modifier is available in settings, scenes, lines, or all
 
-general modifiers:
+**PLEASE NOTE**: using the same modifier key again will overwrite the previous setting for how long that modifier lasts, the priority is line > scene > settings
+
+for example: using `delay: 0.5` inside scenes will overwrite the setting value for `delay` until the scene is over
+
+### general modifiers
+
 modifier key | modifier value | description | usability
 :-- | :-- | :-- | :-- 
 overwrite | dictionary of modifiers | any modifier value in the settings you want to overwrite | scenes, lines
@@ -174,6 +167,8 @@ keys for dialogue:
 
 
 keys for windows:
+currently the window style are automatically applied, if you do not want it, delete everything inside the `style/window.css` file
+
 windows are id-ed by minigame function name, the game where the narrative structure is id-ed `main` and can be accessed by `#main.window`, it's content can be accessed by `#main.window .content` or `#scene.content`
 
 selectors for ALL windows
