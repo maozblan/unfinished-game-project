@@ -16,12 +16,19 @@ export async function start() {
   console.log(div);
 
   loadGameSave();
-  const res = await fetch(new URL("../../narrative/game.json", import.meta.url).href);
-  const content = await res.text();
-  applyModifiers(JSON.parse(content).settings, "settings");
+  // running fetch in parallel
+  const [res_scenes, res_settings] = await Promise.all([
+    fetch(new URL("../../narrative/scenes.json", import.meta.url).href),
+    fetch(new URL("../../narrative/settings.json", import.meta.url).href)
+  ]);
+  const [content_scenes, content_settings] = await Promise.all([
+    res_scenes.json(),
+    res_settings.json()
+  ]);
 
   // :D
-  startGame(JSON.parse(content).scenes);
+  applyModifiers(content_settings, "settings");
+  startGame(content_scenes);
 }
 
 function loadGameSave() {
