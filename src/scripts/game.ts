@@ -1,28 +1,31 @@
-let GAME_SCRIPT = {};
-let GAME_SETTINGS = {
+let GAME_SCRIPT: Script = {};
+let GAME_SETTINGS: Settings = {
   vars: {},
   savedNames: {},
   delay: 0,
 };
-let currentModifiers = { scene: {}, text: {} };
-let currentScene = { key: "", load: 0 };
+let currentModifiers: { scene: Modifiers; text: Modifiers } = {
+  scene: {},
+  text: {},
+};
+let currentScene: { key: string; load: number } = { key: "", load: 0 };
 
-let div = null;
+let div: null | HTMLDivElement = null;
 
 export async function start() {
   // only able to select div after svelte app mounts
   await delay(0.5);
-  div = document.getElementById("scene");
+  div = document.getElementById("scene") as HTMLDivElement;
 
   loadGameSave();
   // running fetch in parallel
   const [res_scenes, res_settings] = await Promise.all([
     fetch(new URL("../../narrative/scenes.json", import.meta.url).href),
-    fetch(new URL("../../narrative/settings.json", import.meta.url).href)
+    fetch(new URL("../../narrative/settings.json", import.meta.url).href),
   ]);
   const [content_scenes, content_settings] = await Promise.all([
     res_scenes.json(),
-    res_settings.json()
+    res_settings.json(),
   ]);
 
   // :D
@@ -34,12 +37,12 @@ function loadGameSave() {
   // load in local stoage data
 }
 
-function startGame(script) {
+function startGame(script: Script) {
   GAME_SCRIPT = script;
-  loadScene(Object.keys(GAME_SCRIPT)[0]);
+  loadScene(GAME_SETTINGS.start ?? Object.keys(GAME_SCRIPT)[0]);
 }
 
-async function loadScene(key) {
+async function loadScene(key: string) {
   clearScreen();
   clearStyles("scene-style");
 
@@ -84,7 +87,7 @@ async function loadScene(key) {
       loadMinigame(text.game);
       continue;
     }
-    
+
     // dialogue or choice
     let textObj = null;
     if (text.link) {
@@ -93,7 +96,11 @@ async function loadScene(key) {
       textObj = createDialogue(text);
     }
     div.append(textObj);
-    textObj.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+    textObj.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest",
+    });
   }
 }
 
@@ -106,11 +113,7 @@ function clearScreen() {
   div.replaceChildren();
 }
 
-function loadDialogue(dialogue) {
-  createDialogue(dialogue);
-}
-
-function createDialogue(dialogue) {
+function createDialogue(dialogue: Dialogue) {
   const div = document.createElement("div");
   if (Array.isArray(dialogue.text)) {
     div.innerHTML = "";
@@ -237,15 +240,15 @@ function setSettingChanges(modifiers) {
 
 // utility functions ///////////////////////////////////////////////////////////
 
-function clean(string) {
+function clean(string: string): string {
   return string.replace(/\s/g, "-");
 }
 
-function marked(md) {
+function marked(md: string): string {
   return md
-    .replace(/[$]\{([\w]+[-_\d\w]*)\}/g, (match, p1) => {
+    .replace(/[$]\{([\w]+[-_\d\w]*)\}/g, (_match, p1) => {
       const tmp = GAME_SETTINGS.vars[`${p1}`];
-      return tmp !== undefined ? tmp.toString() : "UNDEFINED";
+      return tmp ? tmp.toString() : "UNDEFINED";
     })
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/\_\_(.+?)\_\_/g, "<em>$1</em>")
@@ -276,16 +279,16 @@ function createWindow(title) {
 function closeWindow(windowDiv) {
   console.log(windowDiv);
   windowDiv.remove();
-};
+}
 
-// for future iterations if we use node, check out { Parser } from 'expr-eval'
-function condition(cond) {
+// for future iterations, if math is heavy, use { Parser } from 'expr-eval'
+function condition(cond: string) {
   const wordRegex = /(?:\$\{)?[A-Za-z0-9]+(?:[-_][A-Za-z0-9]+)*\}?/g;
   const [ret, params] = parseCondition(cond);
   const func = new Function(...params, `return ${ret};`);
   return func(...parseParameters(cond));
 
-  function parseCondition(c) {
+  function parseCondition(c: string) {
     let termCount = 0;
     const terms = new Map();
 
@@ -298,20 +301,19 @@ function condition(cond) {
     });
     return [ret, [...new Set(ret.match(/\w+/g))]];
   }
-  function parseParameters(cond) {
+  function parseParameters(cond: string): Variable[] {
     return cond
-      .match(wordRegex)
+      .match(wordRegex)!
       .filter((varName, index, self) => {
         if (varName.match(/^-?\d{1,3}(?:,\d{3})*(\.\d+)?$/g)) return true;
         if (self.indexOf(varName) !== index) return false;
         return true;
       })
-      .map((varName) => {
+      .map((varName: string): Variable => {
         if (varName.startsWith("$")) {
           return GAME_SETTINGS.vars[varName.slice(2, -1)];
-        }
-        else if (varName === 'false') return false;
-        else if (varName === 'true') return true
+        } else if (varName === "false") return false;
+        else if (varName === "true") return true;
         return varName;
       });
   }
