@@ -11,7 +11,7 @@ const div = document.getElementById("scene");
 
 document.addEventListener("DOMContentLoaded", async () => {
   loadGameSave();
-  const res = await fetch("./src/game.json");
+  const res = await fetch("./src/varTest.json");
   const content = await res.text();
   applyModifiers(JSON.parse(content).settings, "settings");
 
@@ -245,6 +245,28 @@ function marked(md) {
     );
 }
 
+function createWindow(title) {
+  // onclick returns the div instead of the id, i have no idea why
+  document.getElementById("all-windows").innerHTML += `
+  <div class="window" id="${clean(title)}">
+    <div class="tab">
+      <p class="title">${title}</p>
+      <div class="btns">
+        <p>—</p>
+        <p>☐</p>
+        <p class="close" onclick="closeWindow(${clean(title)});">✕</p>
+      </div>
+    </div>
+    <div class="content"></div>
+  </div>
+  `;
+}
+
+function closeWindow(windowDiv) {
+  console.log(windowDiv);
+  windowDiv.remove();
+};
+
 // for future iterations if we use node, check out { Parser } from 'expr-eval'
 function condition(cond) {
   const wordRegex = /[$]?[A-Za-z0-9]+(?:[-_][A-Za-z0-9]+)*/g;
@@ -283,3 +305,8 @@ function condition(cond) {
       });
   }
 }
+
+document.addEventListener("keydown", () => {
+  console.log(toString(quitGame));
+  createWindow("test");
+});

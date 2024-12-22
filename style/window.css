@@ -26,6 +26,10 @@ html, body {
 
 .window .tab p {
   margin: 5px;
+  cursor: default;
+}
+.window .tab .btns .close {
+  cursor: pointer;
 }
 .window .tab {
   height: var(--tab-height);
