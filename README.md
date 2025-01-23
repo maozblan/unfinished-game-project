@@ -8,8 +8,9 @@ for development mode, download the repo and run `npm install` and `npm run dev` 
 
 all narrative work will be found inside the `narrative` folder, split into two files:
 - `settings.json` holds all the settings that apply to the full game, see modifiers section to see what keys should go in here
-  - all keys should be a valid modifier or else will be ignored
+  - all keys should be a valid modifier or the engine may not run (sorry)
 - `scenes.json` holds all the narrative scenes that will display for the game
+  - the game will start from the first key in `scenes.json` unless otherwise specified in `settings.json` (see modifiers section)
 
 ## scene structure
 
@@ -57,6 +58,14 @@ for customization, see modifiers below
 
 ## currently supported modifiers
 
+### general modifiers
+
+modifier key | modifier value | description | usability
+:-- | :-- | :-- | :-- 
+start | sceneKey as a string | sets the starting scene | settings
+overwrite | dictionary of modifiers | any modifier value in the settings you want permanently to overwrite | scenes, lines
+delay | number in seconds | delays message for x number of seconds (messages are displayed sequentially) | all
+
 ### inline modifiers
 
 inline modifiers are anything that you will encode into the value of the `text` key for either a dialogue object or a choice object
@@ -71,8 +80,6 @@ sceneKey: {
   ]
 }
 ```
-
-#### text formatting
 
 simple markdown:
 format | how to use | display
@@ -93,7 +100,7 @@ you can also use game variables (SEE MODIFIERS SECTION ON HOW TO SET THEM)
   - ex. `text: "variableName has the value $variableName"`
   - if the variable by variableName does not exist, it returns `UNDEFINED`
 
-### additional modifiers
+### non-inline modifiers
 
 additional modifiers can be applied in a whole game, per-line of dialogue or choice, or per-scene
 
@@ -121,60 +128,9 @@ sceneKey: {
 
 setting any modifier in `settings.json` will automatically apply it to all lines and scenes. please check the usability row to see if the modifier is available in settings, scenes, lines, or all
 
-**PLEASE NOTE**: using the same modifier key again will overwrite the previous setting for how long that modifier lasts, the priority is line > scene > settings
+**PLEASE NOTE**: using the same modifier key again will only overwrite the previous setting for how long that modifier lasts, the priority is line > scene > settings, IF YOU want to persist the overwrite, please use the "overwrite" modifier
 
-for example: using `delay: 0.5` inside scenes will overwrite the setting value for `delay` until the scene is over
-
-### general modifiers
-
-modifier key | modifier value | description | usability
-:-- | :-- | :-- | :-- 
-overwrite | dictionary of modifiers | any modifier value in the settings you want to overwrite | scenes, lines
-delay | number in seconds | delays message for x number of seconds (messages are displayed sequentially) | all
-styles | dictionary of css inputs (see below) | adds css in a basic css form | settings, overwrites
-
-#### styles
-
-value format: 
-```js
-styles: {
-  selector: {
-    property: value,
-    property: value
-  }
-}
-```
-
-sample: 
-```js
-styles: {
-  ".class": {
-    "background-color": "#abcdef"
-  },
-  "body": {
-    "color": "rgb(178, 71, 80)";
-  }
-}
-```
-
-preset keys:
-
-keys for dialogue:
-- all text under the `text` key are tagged with `.text`
-- all text is that has a narrator will be encased in a parent block tagged with `.dialogue` and narrator name
-  - individual narrative blocks are tagged with narrator name as class, ex. narrator A's blocks will be tagged with `.A`, any spaces will be replaced with hyphens
-- all choices with links are tagged with `.choice`
-
-
-keys for windows:
-currently the window style are automatically applied, if you do not want it, delete everything inside the `style/window.css` file
-
-windows are id-ed by minigame function name, the game where the narrative structure is id-ed `main` and can be accessed by `#main.window`, it's content can be accessed by `#main.window .content` or `#scene.content`
-
-selectors for ALL windows
-- `.window` selector for fake window tabs
-- `.window .content` box where tab content displays
-- `.window .tab` top bar of windows
+example: using `delay: 0.5` inside scenes will overwrite the setting value for `delay` until the scene is over
 
 #### variables
 modifier key | modifier value | description | usability
@@ -211,12 +167,59 @@ modifiers: {
 }
 ```
 
+#### styles
+
+**PLEASE NOTE**: using this modifier will only grant you a subsection of CSS styles, mostly used fo small changes in lines and scenes (although you can write some that apply to the full game), IF YOU know CSS and or want to make more complicated styles, please write it in `style/userDefinedStyles.css`
+
+using the modifier key `styles`, you can define styles that affect the scene, line, or full game; you can ONLY use selectors, so nothing that starts with @ ex. @keyframes
+
+value format: 
+```js
+styles: {
+  selector: {
+    property1: value,
+    property2: value
+  }
+}
+```
+
+sample: 
+```js
+styles: {
+  ".class": {
+    "background-color": "#abcdef"
+  },
+  "body": {
+    "color": "rgb(178, 71, 80)";
+  }
+}
+```
+
+preset keys:
+
+keys for dialogue:
+- all text under the `text` key are tagged with `.text`
+- all text is that has a narrator will be encased in a parent block tagged with `.dialogue` and narrator name
+  - individual narrative blocks are tagged with narrator name as class, ex. narrator A's blocks will be tagged with `.A`, any spaces will be replaced with hyphens
+- all choices with links are tagged with `.choice`
+
+
+keys for windows:
+currently the window style are automatically applied, if you do not want it, delete everything inside the `style/window.css` file
+
+windows are id-ed by minigame function name, the game where the narrative structure is id-ed `main` and can be accessed by `#main.window`, it's content can be accessed by `#main.window .content` or `#scene.content`
+
+selectors for ALL windows
+- `.window` selector for fake window tabs
+- `.window .content` box where tab content displays
+- `.window .tab` top bar of windows
+
 # list of things being worked on
 
 add to list to request, mark important ones please
 
 ```md
-- [ ] minigame support
+- [x] minigame support
 - support for modifiers:
   - per line basis modifiers
     - [x] timer delay
