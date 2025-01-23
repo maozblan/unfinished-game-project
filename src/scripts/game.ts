@@ -13,24 +13,25 @@ let currentScene: { key: string; load: number } = { key: "", load: 0 };
 let div: null | HTMLDivElement = null;
 
 export async function start() {
-  // only able to select div after svelte app mounts
-  await delay(0.5);
-  div = document.getElementById("scene") as HTMLDivElement;
+  console.log("game started");
+  // // only able to select div after svelte app mounts
+  // await delay(0.5);
+  // div = document.getElementById("scene") as HTMLDivElement;
 
-  loadGameSave();
-  // running fetch in parallel
-  const [res_scenes, res_settings] = await Promise.all([
-    fetch(new URL("../../narrative/scenes.json", import.meta.url).href),
-    fetch(new URL("../../narrative/settings.json", import.meta.url).href),
-  ]);
-  const [content_scenes, content_settings] = await Promise.all([
-    res_scenes.json(),
-    res_settings.json(),
-  ]);
+  // loadGameSave();
+  // // running fetch in parallel
+  // const [res_scenes, res_settings] = await Promise.all([
+  //   fetch(new URL("../../narrative/scenes.json", import.meta.url).href),
+  //   fetch(new URL("../../narrative/settings.json", import.meta.url).href),
+  // ]);
+  // const [content_scenes, content_settings] = await Promise.all([
+  //   res_scenes.json(),
+  //   res_settings.json(),
+  // ]);
 
-  // :D
-  applyModifiers(content_settings, "settings");
-  startGame(content_scenes);
+  // // :D
+  // applyModifiers(content_settings, "settings");
+  // startGame(content_scenes);
 }
 
 function loadGameSave() {
