@@ -1,5 +1,5 @@
 <script lang="ts">
-  import * as game from './scripts/minigames';
+  // import * as game from './scripts/minigames';
   import { start } from './scripts/game';
 
   start();
@@ -13,7 +13,7 @@
         <div class="btns">
           <p>—</p>
           <p>☐</p>
-          <p class="close" on:click={game.quitGame}>✕</p>
+          <p class="close">✕</p>
         </div>
       </div>
       <div id="scene" class="content"></div>
